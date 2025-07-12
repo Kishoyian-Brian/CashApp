@@ -273,10 +273,33 @@ function App() {
 
   const handleSendToPay = () => {
     if (!selectedUser || !dollarValue) return;
-    setLastDollarAmount(dollarValue);
+    const amount = parseFloat(dollarValue);
+    if (isNaN(amount) || amount <= 0) return;
+    if (amount > balance) {
+      addNotification('Insufficient funds. You cannot send more than your available balance.');
+      return;
+    }
+    
+    // Reduce balance immediately
+    setBalance(prev => prev - amount);
+    
+    // Set the formatted amount for display
+    setLastDollarAmount(formatBalance(amount));
+    
+    // Reset the dollar value
+    setDollarValue('');
+    
+    // Close the send modal
     setSendToModal(false);
+    
+    // Show loading and then confirmation
     showLoading('Processing Payment', 'Sending payment...', () => {
       setConfirmationModal(true);
+      
+      // Add success notification after a short delay
+      setTimeout(() => {
+        addNotification(`Successfully sent ${formatBalance(amount)} to ${selectedUser.name}`);
+      }, 1000);
     });
   };
 
@@ -713,21 +736,19 @@ function App() {
                     }`}
                   onClick={() => setSelectedUser(selectedUser?.cashtag === user.cashtag ? null : user)}
                 >
-                  <label className="relative flex items-center cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={selectedUser?.cashtag === user.cashtag}
-                      onChange={() => { }}
-                      className="appearance-none w-3 h-3 sm:w-4 sm:h-4 border-2 border-gray-400 rounded bg-transparent checked:bg-[#36d24a] checked:border-[#36d24a] transition-all"
-                    />
-                    {selectedUser?.cashtag === user.cashtag && (
-                      <span className="absolute left-0 top-0 w-3 h-3 sm:w-4 sm:h-4 flex items-center justify-center pointer-events-none">
-                        <svg className="w-2 h-2 sm:w-3 sm:h-3 text-white" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                        </svg>
-                      </span>
-                    )}
-                  </label>
+                  <div className="relative flex items-center cursor-pointer">
+                    <div className={`w-4 h-4 sm:w-5 sm:h-5 border-2 rounded-md transition-all duration-200 ease-in-out ${
+                      selectedUser?.cashtag === user.cashtag 
+                        ? 'bg-[#36d24a] border-[#36d24a] scale-110' 
+                        : 'border-gray-400 bg-transparent hover:border-[#36d24a] hover:scale-105'
+                    }`}>
+                      {selectedUser?.cashtag === user.cashtag && (
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <div className="w-2 h-1 border-l-2 border-b-2 border-white transform rotate-[-45deg] translate-y-[-1px]"></div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
                   <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-white font-bold text-xs sm:text-sm" style={{ backgroundColor: user.color }}>
                     {user.avatar}
                   </div>
@@ -871,7 +892,7 @@ function App() {
                 <circle cx="18" cy="12" r="1.5" />
               </svg>
             </button>
-            {/* 3. Top section: avatar, user, payment to */}
+            {/* Top section: avatar, user, payment to */}
             <div className="flex flex-col items-center mb-10 mt-12">
               <div className="w-16 h-16 rounded-full mb-4 mx-auto flex items-center justify-center text-white font-bold text-lg sm:text-xl" style={{ backgroundColor: selectedUser.color }}>
                 {selectedUser.avatar}
@@ -879,18 +900,16 @@ function App() {
               <div className="text-xl sm:text-2xl font-bold mb-1">{selectedUser.name}</div>
               <div className="text-gray-400 text-sm sm:text-base">Payment to {selectedUser.cashtag}</div>
             </div>
-            {/* 4. Main content: amount and date centered */}
+            {/* Main content: amount and date centered */}
             <div className="flex flex-col items-center flex-1 justify-center">
               <div className="text-3xl sm:text-4xl font-bold mb-3">
-                ${(!isNaN(Number(lastDollarAmount)) && lastDollarAmount !== ''
-                  ? Number(lastDollarAmount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
-                  : '0.00')}
+                {lastDollarAmount || '$0.00'}
               </div>
               <div className="text-gray-400 mb-8 sm:mb-10 text-sm sm:text-base">
                 Today at {new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })}
               </div>
             </div>
-            {/* 5. Button group */}
+            {/* Button group */}
             <div className="space-y-3 sm:space-y-4 w-full">
               <button
                 onClick={() => setConfirmationModal(false)}
@@ -904,7 +923,7 @@ function App() {
               </button>
             </div>
           </div>
-          {/* Footer - same structure as main footer, but dark background and light icons/text */}
+          {/* Footer */}
           <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-sm bg-[#10131a] border-t border-gray-800 flex justify-around py-2 px-2 sm:px-4">
             <div className="text-center text-xs sm:text-sm min-w-0 flex-1">
               <div className="font-semibold text-white">{formatBalanceShort(balance)}</div>
