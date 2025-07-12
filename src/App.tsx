@@ -414,8 +414,8 @@ function App() {
 
       {/* Cash Out Modal */}
       {cashOutModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 z-50 flex items-end justify-center p-0">
-          <div className="bg-gray-50 rounded-t-3xl w-full max-w-sm h-3/4 sm:h-auto sm:max-h-[80vh] p-4 sm:p-6 transform transition-transform duration-300 flex flex-col items-center overflow-y-auto">
+        <div className="fixed inset-0 bg-white z-50 flex flex-col">
+          <div className="flex flex-col flex-1 items-center justify-center px-6 py-8 overflow-y-auto">
             <div className="w-10 h-1 bg-gray-300 rounded-full mb-4 sm:mb-6 flex-shrink-0"></div>
             <div className="text-center mb-6 sm:mb-8 flex-shrink-0">
               <div className="text-lg sm:text-xl font-semibold mb-2">Cash Out</div>
@@ -459,8 +459,8 @@ function App() {
 
       {/* Add Cash Modal */}
       {addCashModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 z-50 flex items-end justify-center p-0">
-          <div className="bg-gray-50 rounded-t-3xl w-full max-w-sm h-3/4 sm:h-auto sm:max-h-[80vh] p-4 sm:p-6 transform transition-transform duration-300 flex flex-col justify-center items-center overflow-y-auto">
+        <div className="fixed inset-0 bg-white z-50 flex flex-col">
+          <div className="flex flex-col flex-1 items-center justify-center px-6 py-8 overflow-y-auto">
             <div className="w-10 h-1 bg-gray-300 rounded-full mb-4 sm:mb-6 flex-shrink-0"></div>
             <div className="text-center mb-6 sm:mb-8 flex-shrink-0">
               <div className="text-lg sm:text-xl font-semibold mb-2">Add Cash</div>
