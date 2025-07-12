@@ -272,8 +272,8 @@ function App() {
   };
 
   const handleSendToPay = () => {
-    if (!selectedUser || !lastDollarAmount) return;
-    
+    if (!selectedUser || !dollarValue) return;
+    setLastDollarAmount(dollarValue);
     setSendToModal(false);
     showLoading('Processing Payment', 'Sending payment...', () => {
       setConfirmationModal(true);
@@ -639,7 +639,7 @@ function App() {
             <input
               type="text"
               placeholder="To   Name, $Cashtag, Phone, Email"
-              className="w-full bg-gray-800 rounded-xl px-3 sm:px-4 py-2 sm:py-3 outline-none text-sm sm:text-base"
+              className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-2 text-sm text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 transition"
               value={sendToValue}
               onChange={(e) => setSendToValue(e.target.value)}
               onFocus={() => setShowUserDropdown(true)}
@@ -673,9 +673,6 @@ function App() {
               </div>
             )}
             
-            <input
-              type="text"
-            />
           </div>
 
           <div className="px-3 sm:px-4 mb-3 sm:mb-4">
@@ -704,11 +701,11 @@ function App() {
                       type="checkbox"
                       checked={selectedUser?.cashtag === user.cashtag}
                       onChange={() => { }}
-                      className="appearance-none w-3 h-3 border-2 border-gray-400 rounded bg-transparent checked:bg-[#36d24a] checked:border-[#36d24a] transition-all"
+                      className="appearance-none w-3 h-3 sm:w-4 sm:h-4 border-2 border-gray-400 rounded bg-transparent checked:bg-[#36d24a] checked:border-[#36d24a] transition-all"
                     />
                     {selectedUser?.cashtag === user.cashtag && (
-                      <span className="absolute left-0 top-0 w-3 h-3 flex items-center justify-center pointer-events-none">
-                        <svg className="w-2 h-2 text-white" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
+                      <span className="absolute left-0 top-0 w-3 h-3 sm:w-4 sm:h-4 flex items-center justify-center pointer-events-none">
+                        <svg className="w-2 h-2 sm:w-3 sm:h-3 text-white" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                         </svg>
                       </span>
@@ -834,11 +831,11 @@ function App() {
       {/* Confirmation Modal */}
       {confirmationModal && selectedUser && (
         <div className="fixed inset-0 bg-[#10131a] z-50 flex flex-col">
-          <div className="text-white text-center p-6 sm:p-8 w-full max-w-sm flex flex-col flex-1 min-h-[70vh] justify-between relative mx-auto">
+          <div className="text-white text-center p-6 sm:p-8 w-full max-w-sm flex flex-col flex-1 min-h-[70vh] justify-between relative mx-auto pb-16">
             {/* Top left back arrow */}
             <button
               onClick={() => setConfirmationModal(false)}
-              className="absolute top-4 left-4 z-10 p-2 rounded-full hover:bg-gray-800 active:bg-gray-700"
+              className="absolute top-6 left-4 z-10 p-2 rounded-full hover:bg-gray-800 active:bg-gray-700"
               aria-label="Back"
             >
               <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -858,7 +855,7 @@ function App() {
               </svg>
             </button>
             {/* 3. Top section: avatar, user, payment to */}
-            <div className="flex flex-col items-center mb-6">
+            <div className="flex flex-col items-center mb-10 mt-12">
               <div className="w-16 h-16 rounded-full mb-4 mx-auto flex items-center justify-center text-white font-bold text-lg sm:text-xl" style={{ backgroundColor: selectedUser.color }}>
                 {selectedUser.avatar}
               </div>
@@ -867,7 +864,11 @@ function App() {
             </div>
             {/* 4. Main content: amount and date centered */}
             <div className="flex flex-col items-center flex-1 justify-center">
-              <div className="text-3xl sm:text-4xl font-bold mb-3">{lastDollarAmount}</div>
+              <div className="text-3xl sm:text-4xl font-bold mb-3">
+                ${(!isNaN(Number(lastDollarAmount)) && lastDollarAmount !== ''
+                  ? Number(lastDollarAmount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+                  : '0.00')}
+              </div>
               <div className="text-gray-400 mb-8 sm:mb-10 text-sm sm:text-base">
                 Today at {new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })}
               </div>
