@@ -833,14 +833,30 @@ function App() {
 
       {/* Confirmation Modal */}
       {confirmationModal && selectedUser && (
-        <div className="fixed inset-0 bg-gray-900 z-50 flex items-center justify-center p-4">
-          <div className="text-white text-center p-6 sm:p-8 w-full max-w-sm flex flex-col h-full min-h-[70vh] justify-between">
-            {/* 2. Top bar (optional, e.g. close button) */}
-            <div className="flex items-center justify-between mb-4">
-              <button onClick={() => setConfirmationModal(false)} className="text-2xl font-bold">←</button>
-              <div className="flex-1" />
-              <div className="text-3xl text-gray-400 font-bold">⋯</div>
-            </div>
+        <div className="fixed inset-0 bg-[#10131a] z-50 flex flex-col">
+          <div className="text-white text-center p-6 sm:p-8 w-full max-w-sm flex flex-col flex-1 min-h-[70vh] justify-between relative mx-auto">
+            {/* Top left back arrow */}
+            <button
+              onClick={() => setConfirmationModal(false)}
+              className="absolute top-4 left-4 z-10 p-2 rounded-full hover:bg-gray-800 active:bg-gray-700"
+              aria-label="Back"
+            >
+              <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            {/* Top right horizontal ellipsis */}
+            <button
+              className="absolute top-4 right-4 z-10 p-2 rounded-full hover:bg-gray-800 active:bg-gray-700"
+              aria-label="More options"
+              type="button"
+            >
+              <svg className="w-7 h-7 text-gray-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <circle cx="6" cy="12" r="1.5" />
+                <circle cx="12" cy="12" r="1.5" />
+                <circle cx="18" cy="12" r="1.5" />
+              </svg>
+            </button>
             {/* 3. Top section: avatar, user, payment to */}
             <div className="flex flex-col items-center mb-6">
               <div className="w-16 h-16 rounded-full mb-4 mx-auto flex items-center justify-center text-white font-bold text-lg sm:text-xl" style={{ backgroundColor: selectedUser.color }}>
@@ -868,6 +884,39 @@ function App() {
               <button className="w-full border-2 border-gray-600 text-white py-3 sm:py-4 rounded-full font-semibold text-base sm:text-lg active:scale-95 transition-transform">
                 Web Receipt
               </button>
+            </div>
+          </div>
+          {/* Footer - same structure as main footer, but dark background and light icons/text */}
+          <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-sm bg-[#10131a] border-t border-gray-800 flex justify-around py-2 px-2 sm:px-4">
+            <div className="text-center text-xs sm:text-sm min-w-0 flex-1">
+              <div className="font-semibold text-white">{formatBalanceShort(balance)}</div>
+            </div>
+            <div className="text-center text-xs sm:text-sm cursor-pointer min-w-0 flex-1 active:scale-95 transition-transform">
+              <svg className="w-5 h-5 mx-auto text-gray-300" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <rect x="2" y="7" width="20" height="10" rx="2" />
+                <path d="M16 11h2a2 2 0 0 1 0 4h-2" />
+              </svg>
+            </div>
+            <div className="text-center text-xs sm:text-sm cursor-pointer min-w-0 flex-1 active:scale-95 transition-transform" onClick={() => {
+              setConfirmationModal(false);
+              setDollarModal(true);
+            }}>
+              <div className="text-xl sm:text-2xl text-gray-300 font-bold">$</div>
+            </div>
+            <div className="text-center text-xs sm:text-sm cursor-pointer min-w-0 flex-1 active:scale-95 transition-transform" onClick={() => {
+              setConfirmationModal(false);
+              setSearchModal(true);
+            }}>
+              <Search className="w-4 h-4 sm:w-5 sm:h-5 mx-auto text-gray-300" />
+            </div>
+            <div className="text-center text-xs sm:text-sm cursor-pointer relative min-w-0 flex-1 active:scale-95 transition-transform" onClick={() => {
+              setConfirmationModal(false);
+              setNotificationCenter(true);
+              markAllNotificationsRead();
+            }}>
+              <div className="w-5 h-5 sm:w-6 sm:h-6 bg-black text-white rounded-full flex items-center justify-center text-xs sm:text-sm font-bold mx-auto">
+                {unreadCount}
+              </div>
             </div>
           </div>
         </div>
