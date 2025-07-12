@@ -414,44 +414,61 @@ function App() {
 
       {/* Cash Out Modal */}
       {cashOutModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 z-50 flex items-end justify-center p-0">
-          <div className="bg-gray-50 rounded-t-3xl w-full h-3/4 sm:max-w-sm sm:mx-auto sm:h-auto sm:max-h-[80vh] p-4 sm:p-6 transform transition-transform duration-300 flex flex-col items-center overflow-y-auto">
-            <div className="w-10 h-1 bg-gray-300 rounded-full mb-4 sm:mb-6 flex-shrink-0"></div>
-            <div className="text-center mb-6 sm:mb-8 flex-shrink-0">
-              <div className="text-lg sm:text-xl font-semibold mb-2">Cash Out</div>
-              <div className="text-gray-600 text-sm sm:text-base">To Chase Bank</div>
+        <div className="fixed inset-0 z-50 flex items-end justify-center bg-black bg-opacity-40">
+          <div className="bg-white/95 backdrop-blur-sm rounded-t-3xl p-6 shadow-lg w-full max-w-sm mx-auto h-3/4 flex flex-col justify-center">
+            {/* Modal content starts here */}
+            <div className="flex flex-col items-center justify-center flex-1 w-full">
+              <div className="text-center mb-2">
+                <div className="text-black font-bold text-lg mb-1">Cash Out</div>
+                <div className="text-gray-400 text-sm">{`$${balance.toLocaleString('en-US', { maximumFractionDigits: 0 })}`} AVAILABLE</div>
+              </div>
+              <div className="text-green-500 font-extrabold text-5xl sm:text-6xl mb-6 flex items-center justify-center w-full">
+                ${cashOutValue ? parseInt(cashOutValue).toLocaleString('en-US') : '0'}
+              </div>
+              {/* Slider */}
+              <input
+                type="range"
+                min={0}
+                max={Math.floor(balance)}
+                value={cashOutValue ? parseInt(cashOutValue) : 0}
+                onChange={e => setCashOutValue(e.target.value)}
+                className="w-11/12 max-w-xs mb-8 accent-green-500 h-2"
+                style={{ accentColor: '#22c55e' }}
+              />
+              {/* Cash Out Button */}
+              <button
+                onClick={processCashOut}
+                className={`w-11/12 max-w-xs py-4 rounded-full font-semibold text-lg mb-2 transition-all ${cashOutValue && parseInt(cashOutValue) > 0 ? 'bg-green-500 hover:bg-green-600 text-white' : 'bg-gray-700 text-gray-400'}`}
+                disabled={!cashOutValue || parseInt(cashOutValue) <= 0}
+              >
+                Cash Out
+              </button>
             </div>
-            
-            <div className="text-4xl sm:text-5xl font-bold text-green-500 mb-6 sm:mb-8 flex-shrink-0">
-              {getDisplayAmount(cashOutValue, 'cashOut')}
+          </div>
+          {/* Footer at the bottom, just like home page */}
+          <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-sm bg-white border-t border-gray-200 flex justify-around py-2 px-2 sm:px-4 safe-area-pb z-50">
+            <div className="text-center text-xs sm:text-sm min-w-0 flex-1">
+              <div className="font-semibold">{formatBalanceShort(balance)}</div>
             </div>
-            
-            <div className="w-32 sm:w-48 h-1 bg-green-500 rounded-full mb-6 sm:mb-8 flex-shrink-0"></div>
-            
-            <button
-              onClick={processCashOut}
-              className={`w-full max-w-xs py-3 sm:py-4 rounded-full font-semibold text-base sm:text-lg mb-6 sm:mb-8 transition-all flex-shrink-0 ${
-                cashOutValue ? 'bg-green-500 hover:bg-green-600 text-white' : 'bg-gray-300 text-gray-500'
-              }`}
-              disabled={!cashOutValue}
-            >
-              Confirm
-            </button>
-            
-            <div className="grid grid-cols-3 gap-3 sm:gap-4 w-full max-w-xs flex-shrink-0">
-              {['1', '2', '3', '4', '5', '6', '7', '8', '9', '', '0', '⌫'].map((digit, idx) => (
-                <KeypadButton
-                  key={idx}
-                  digit={digit}
-                  onClick={() => {
-                    if (digit === '⌫') {
-                      removeDigit('cashOut');
-                    } else if (digit !== '') {
-                      addDigit(digit, 'cashOut');
-                    }
-                  }}
-                />
-              ))}
+            <div className="text-center text-xs sm:text-sm cursor-pointer min-w-0 flex-1 active:scale-95 transition-transform">
+              <svg className="w-5 h-5 mx-auto text-gray-700" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <rect x="2" y="7" width="20" height="10" rx="2" />
+                <path d="M16 11h2a2 2 0 0 1 0 4h-2" />
+              </svg>
+            </div>
+            <div className="text-center text-xs sm:text-sm cursor-pointer min-w-0 flex-1 active:scale-95 transition-transform" onClick={() => setDollarModal(true)}>
+              <div className="text-xl sm:text-2xl text-gray-700 font-bold">$</div>
+            </div>
+            <div className="text-center text-xs sm:text-sm cursor-pointer min-w-0 flex-1 active:scale-95 transition-transform" onClick={() => setSearchModal(true)}>
+              <Search className="w-4 h-4 sm:w-5 sm:h-5 mx-auto" />
+            </div>
+            <div className="text-center text-xs sm:text-sm cursor-pointer relative min-w-0 flex-1 active:scale-95 transition-transform" onClick={() => {
+              setNotificationCenter(true);
+              markAllNotificationsRead();
+            }}>
+              <div className="w-5 h-5 sm:w-6 sm:h-6 bg-black text-white rounded-full flex items-center justify-center text-xs sm:text-sm font-bold mx-auto">
+                {unreadCount}
+              </div>
             </div>
           </div>
         </div>
