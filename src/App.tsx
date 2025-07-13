@@ -194,10 +194,11 @@ function App() {
       setSuccessAmount(amount.toString());
       setSuccessModal(true);
       
+      // Delay notification until after success modal is likely to be seen
       setTimeout(() => {
         const formattedAmount = amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         addNotification(`You successfully cashed out $${formattedAmount} to Chase Bank. Funds will be available instantly.`);
-      }, 1000);
+      }, 3000);
     });
   };
 
@@ -215,10 +216,11 @@ function App() {
       setSuccessAmount(amount.toString());
       setSuccessModal(true);
       
+      // Delay notification until after success modal is likely to be seen
       setTimeout(() => {
         const formattedAmount = amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         addNotification(`A deposit of $${formattedAmount} is now available in your Cash App. Open the app to view details.`);
-      }, 1000);
+      }, 3000);
     });
   };
 
@@ -296,10 +298,10 @@ function App() {
     showLoading('Processing Payment', 'Sending payment...', () => {
       setConfirmationModal(true);
       
-      // Add success notification after a short delay
+      // Delay notification until after confirmation modal is likely to be seen
       setTimeout(() => {
         addNotification(`Successfully sent ${formatBalance(amount)} to ${selectedUser.name}`);
-      }, 1000);
+      }, 3000);
     });
   };
 
@@ -857,12 +859,9 @@ function App() {
 
       {/* Loading Modal */}
       {loadingModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl p-6 sm:p-10 text-center max-w-xs w-full mx-4">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 border-4 border-gray-200 border-t-green-500 rounded-full animate-spin mx-auto mb-4 sm:mb-6"></div>
-            <div className="text-base sm:text-lg font-semibold mb-2">{loadingTitle}</div>
-            <div className="text-gray-600 text-xs sm:text-sm">{loadingSubtitle}</div>
-          </div>
+        <div className="fixed inset-0 bg-[#10131a] z-50 flex items-center justify-center">
+          {/* Green spinner */}
+          <div className="w-16 h-16 border-4 border-transparent border-t-green-500 rounded-full animate-spin mb-8"></div>
         </div>
       )}
 
