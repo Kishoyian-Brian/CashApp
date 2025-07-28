@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Search, User, Check, Link, Star } from 'lucide-react';
 import { createRoot } from 'react-dom/client';
+import image3 from './assets/image3.png';
 
 interface User {
   name: string;
@@ -422,7 +423,7 @@ function App() {
           </svg>
         </div>
         <div className="text-center text-xs sm:text-sm cursor-pointer min-w-0 flex-1 active:scale-95 transition-transform" onClick={() => setDollarModal(true)}>
-          <div className="text-xl sm:text-2xl text-gray-700 font-bold">$</div>
+          <img src={image3} alt="Cash App" className="w-5 h-5 sm:w-6 sm:h-6 mx-auto" />
         </div>
         <div className="text-center text-xs sm:text-sm cursor-pointer min-w-0 flex-1 active:scale-95 transition-transform" onClick={() => setSearchModal(true)}>
           <Search className="w-4 h-4 sm:w-5 sm:h-5 mx-auto" />
@@ -482,7 +483,7 @@ function App() {
               </svg>
             </div>
             <div className="text-center text-xs sm:text-sm cursor-pointer min-w-0 flex-1 active:scale-95 transition-transform" onClick={() => setDollarModal(true)}>
-              <div className="text-xl sm:text-2xl text-gray-700 font-bold">$</div>
+              <img src={image3} alt="Cash App" className="w-5 h-5 sm:w-6 sm:h-6 mx-auto" />
             </div>
             <div className="text-center text-xs sm:text-sm cursor-pointer min-w-0 flex-1 active:scale-95 transition-transform" onClick={() => setSearchModal(true)}>
               <Search className="w-4 h-4 sm:w-5 sm:h-5 mx-auto" />
@@ -836,7 +837,7 @@ function App() {
               setSuccessModal(false);
               setDollarModal(true);
             }}>
-              <div className="text-xl sm:text-2xl text-gray-700 font-bold">$</div>
+              <img src={image3} alt="Cash App" className="w-5 h-5 sm:w-6 sm:h-6 mx-auto" />
             </div>
             <div className="text-center text-xs sm:text-sm cursor-pointer min-w-0 flex-1 active:scale-95 transition-transform" onClick={() => {
               setSuccessModal(false);
@@ -937,7 +938,7 @@ function App() {
               setConfirmationModal(false);
               setDollarModal(true);
             }}>
-              <div className="text-xl sm:text-2xl text-gray-300 font-bold">$</div>
+              <img src={image3} alt="Cash App" className="w-5 h-5 sm:w-6 sm:h-6 mx-auto" />
             </div>
             <div className="text-center text-xs sm:text-sm cursor-pointer min-w-0 flex-1 active:scale-95 transition-transform" onClick={() => {
               setConfirmationModal(false);
